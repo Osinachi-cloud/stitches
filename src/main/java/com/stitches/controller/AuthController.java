@@ -1,6 +1,6 @@
 package com.stitches.controller;
 
-import com.stitches.config.security.JwtService;
+import com.stitches.security.JwtService;
 import com.stitches.dto.request.AuthenticationRequest;
 import com.stitches.dto.request.RegisterRequest;
 import com.stitches.dto.response.AuthenticationResponse;

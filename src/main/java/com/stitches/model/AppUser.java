@@ -1,5 +1,6 @@
 package com.stitches.model;
 
+import com.stitches.enums.Gender;
 import com.stitches.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,12 @@ public class AppUser implements UserDetails {
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @OneToOne
+    private BodyMeasurement bodyMeasurement;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")

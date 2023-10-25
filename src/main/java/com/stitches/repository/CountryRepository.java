@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface CountryRepository extends JpaRepository<Country, Long> {
 
     Optional<Country> findCountryByCode(String code);
+
+    Optional<Country> findCountryByCodeOrName(String code, String name);
     void deleteCountryById(Long id);
 }

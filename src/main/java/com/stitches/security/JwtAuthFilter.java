@@ -1,4 +1,4 @@
-package com.stitches.config.security;
+package com.stitches.security;
 
 import com.stitches.service.serviceImpl.UserInfoUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;

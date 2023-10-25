@@ -22,12 +22,19 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public CountryDTO addCountry(CountryDTO countryDTO) {
-        Country country = new Country();
-        BeanUtils.copyProperties(countryDTO, country);
-        Country savedCountry = countryRepository.save(country);
-        CountryDTO countryDTOResponse = new CountryDTO();
-        BeanUtils.copyProperties(savedCountry, countryDTOResponse);
-        return countryDTOResponse;
+
+        Optional<Country> optionalCountry = countryRepository.findCountryByCodeOrName(countryDTO.getCode(), countryDTO.getName());
+
+        if(optionalCountry.isPresent()){
+            throw new ApiRequestException("Country name: " + countryDTO.getName() + " " + "country code: " + countryDTO.getCode() + " already exists");
+        }else{
+            Country country = new Country();
+            BeanUtils.copyProperties(countryDTO, country);
+            Country savedCountry = countryRepository.save(country);
+            CountryDTO countryDTOResponse = new CountryDTO();
+            BeanUtils.copyProperties(savedCountry, countryDTOResponse);
+            return countryDTOResponse;
+        }
     }
 
     @Override

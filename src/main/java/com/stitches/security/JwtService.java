@@ -1,4 +1,4 @@
-package com.stitches.config.security;
+package com.stitches.security;
 
 
 import java.security.Key;
@@ -63,7 +63,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*30))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*360))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
