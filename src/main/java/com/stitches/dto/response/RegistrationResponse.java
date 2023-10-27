@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class RegistrationResponse {
     @JsonProperty("response")
     private String response;
+    private boolean isOtpSent;
 
 }
 

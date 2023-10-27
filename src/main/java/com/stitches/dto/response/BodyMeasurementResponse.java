@@ -2,23 +2,25 @@ package com.stitches.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 public class BodyMeasurementResponse {
-    private String neck;
-    private String shoulder;
-    private String chest;
-    private String tummy;
-    private String hipWidth;
-    private String neckToHipLength;
-    private String shortSleeveAtBiceps;
-    private String midSleeveAtElbow;
-    private String longSleeveAtWrist;
-    private String waist;
-    private String thigh;
-    private String knee;
-    private String ankle;
-    private String trouserLength;
+    private int neck;
+    private int shoulder;
+    private int chest;
+    private int tummy;
+    private int hipWidth;
+    private int neckToHipLength;
+    private int shortSleeveAtBiceps;
+    private int midSleeveAtElbow;
+    private int longSleeveAtWrist;
+    private int waist;
+    private int thigh;
+    private int knee;
+    private int ankle;
+    private int trouserLength;
 }

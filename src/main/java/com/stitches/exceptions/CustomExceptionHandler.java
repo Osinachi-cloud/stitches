@@ -6,15 +6,20 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.nio.file.AccessDeniedException;
 import java.security.SignatureException;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
@@ -92,6 +97,16 @@ public class CustomExceptionHandler {
                 internalServerError,
                 ZonedDateTime.now(ZoneId.systemDefault()));
         return new ResponseEntity<Object>(exceptionDetail, internalServerError);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> validationError(MethodArgumentNotValidException ex) {
+        BindingResult result = ex.getBindingResult();
+        final List<FieldError> fieldErrors = result.getFieldErrors();
+        var fieldErrorList = (FieldError[])(fieldErrors.toArray(new FieldError[fieldErrors.size()]));
+
+        ApiException exceptionDetail = new ApiException(fieldErrorList[0].getDefaultMessage(),HttpStatus.BAD_REQUEST, ZonedDateTime.now());
+        return new ResponseEntity<>(exceptionDetail, badRequestError);
     }
 
 }

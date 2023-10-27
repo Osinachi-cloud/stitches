@@ -2,10 +2,8 @@ package com.stitches.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 @Entity
 @Data
@@ -18,18 +16,23 @@ public class BodyMeasurement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String neck;
-    private String shoulder;
-    private String chest;
-    private String tummy;
-    private String hipWidth;
-    private String neckToHipLength;
-    private String shortSleeveAtBiceps;
-    private String midSleeveAtElbow;
-    private String longSleeveAtWrist;
-    private String waist;
-    private String thigh;
-    private String knee;
-    private String ankle;
-    private String trouserLength;
+
+
+    @NotNull(message = "Neck length is required")
+    @Min(value=1, message="neck length: positive number, min 18 is required")
+    @Max(value=100, message="neck length: positive number, max 100 is required")
+    private Integer neck;
+    private int shoulder;
+    private int chest;
+    private int tummy;
+    private int hipWidth;
+    private int neckToHipLength;
+    private int shortSleeveAtBiceps;
+    private int midSleeveAtElbow;
+    private int longSleeveAtWrist;
+    private int waist;
+    private int thigh;
+    private int knee;
+    private int ankle;
+    private int trouserLength;
 }

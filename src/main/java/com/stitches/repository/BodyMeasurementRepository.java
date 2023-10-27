@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface BodyMeasurementRepository extends JpaRepository<BodyMeasurement, Long> {
 
-    BodyMeasurement saveBodyMeasurement(BodyMeasurementRequest request, Long customerId);
+//    BodyMeasurement save(BodyMeasurementRequest request, Long customerId);
 
 
 

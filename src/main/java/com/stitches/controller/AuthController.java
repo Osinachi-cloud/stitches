@@ -1,8 +1,10 @@
 package com.stitches.controller;
 
+import com.stitches.dto.request.NewPasswordRequest;
+import com.stitches.dto.request.ResetPasswordRequest;
 import com.stitches.security.JwtService;
 import com.stitches.dto.request.AuthenticationRequest;
-import com.stitches.dto.request.RegisterRequest;
+import com.stitches.dto.request.AppUserRequest;
 import com.stitches.dto.response.AuthenticationResponse;
 import com.stitches.dto.response.HttpResponse;
 import com.stitches.dto.response.RegistrationResponse;
@@ -14,20 +16,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-
 import static java.time.LocalTime.now;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
-
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -55,8 +54,8 @@ public class AuthController {
             log.info("second");
             log.info("third : {}" , "third");
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        if (authentication.isAuthenticated()) {
+
+        if (userService.authenticate(request).isAuthenticated()) {
             AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
                     .accessToken(jwtService.generateToken(request.getEmail()))
                     .build();
@@ -82,8 +81,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<HttpResponse> register(
-            @RequestBody RegisterRequest request
-    ) {
+            @RequestBody AppUserRequest request
+    ) throws IOException {
 
         RegistrationResponse registrationResponse =
                 userService.register(request);
@@ -97,6 +96,32 @@ public class AuthController {
                 .status(HttpStatus.CREATED)
                 .data(regRes)
                 .build();
+        return ResponseEntity.ok(httpResponse);
+    }
+
+    @PostMapping("/otp-verification")
+    public ResponseEntity<HttpResponse> verifyOTP(@RequestParam (name = "email", required = true) String email,
+                                                  @RequestParam (name = "otp", required = true) String otp)
+    {
+        HttpResponse httpResponse = new HttpResponse();
+        boolean isOtpSent = userService.verifyOTP(email, otp);
+
+        Map<String, Boolean> otpRes = new HashMap<>();
+        otpRes.put("Otp Confirmed", isOtpSent);
+
+        httpResponse.setData(otpRes);
+        if(isOtpSent){
+            httpResponse.setStatus(OK);
+            httpResponse.setMessage("Otp Confirmed");
+            httpResponse.setTimeStamp(LocalDateTime.now().toString());
+            httpResponse.setStatusCode(200);
+        }else {
+            httpResponse.setStatus(BAD_REQUEST);
+            httpResponse.setMessage("Wrong OTP");
+            httpResponse.setTimeStamp(LocalDateTime.now().toString());
+            httpResponse.setStatusCode(400);
+        }
+
         return ResponseEntity.ok(httpResponse);
     }
 
@@ -125,4 +150,39 @@ public class AuthController {
                         .build());
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<HttpResponse> forgotPassword(@RequestParam (name = "email", required = true) String email) throws IOException {
+
+        Map<String, Boolean> responseData = new HashMap<>();
+        responseData.put("result", userService.forgotPassword(email));
+
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(now().toString())
+                        .data(responseData)  // Use the created Map here
+                        .message("an Otp has been sent to your mail")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build());
+    }
+
+    @PostMapping("/new-password")
+    public ResponseEntity<HttpResponse> newPassword(@RequestParam (name="email", required = true) String email, @RequestBody NewPasswordRequest newPasswordRequest) throws IOException {
+
+        Map<String, Boolean> responseData = new HashMap<>();
+        responseData.put("result", userService.newPassword(email, newPasswordRequest));
+
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(now().toString())
+                        .data(responseData)  // Use the created Map here
+                        .message("Password changed successfully")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build());
+    }
+
 }
+
+
+

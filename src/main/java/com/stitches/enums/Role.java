@@ -15,6 +15,7 @@ import static com.stitches.enums.Permission.*;
 public enum Role {
 
     USER(Set.of( USER_MAKER, USER_CHECKER)),
+    CUSTOMER(Set.of(    CUSTOMER_TIER_ONE, CUSTOMER_TIER_TWO, CUSTOMER_TIER_THREE)),
     ADMIN(
             Set.of(
 

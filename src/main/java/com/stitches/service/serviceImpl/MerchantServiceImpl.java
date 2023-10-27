@@ -105,50 +105,7 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
 
-//    @Scheduled(fixedRate = 60000)
-//    private void exportToTextFile(){
-//        SimpleDateFormat formatDate = new SimpleDateFormat("DDMMYYYY");
-//        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("ddMMyyyy");
-//
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter("merchant_data.txt"))) {
-//            String headerIdentifier = "1";
-//            String acquirerMastercardCustomerID = "HHHHHHHHHHH";
-//            String dateFileReceived = formatDate.format(new Date());
-//            String filler = "              ";
-//            String fillerSpaces = "                                              ";
-//
-//            writer.write(headerIdentifier + acquirerMastercardCustomerID + dateFileReceived + filler + fillerSpaces);
-//            writer.newLine(); // Move to the next line
-//            for (Merchant merchant : this.merchantList){
-//                String formattedDate = dateFormat.format(merchant.getRequestDate());
-//                // Build a line with fields separated by spaces
-//                String line = String.format("%s%s %s %s %s %s %s ",
-//                        "A",
-//                        formattedDate,
-//                        merchant.getAcquirerIdentifier(),
-//                        merchant.getRequestType(),
-//                        merchant.getMerchantID(),
-//                        merchant.getName(),
-////                        merchant.getIcaName(),
-//                        merchant.getCardAcceptorBusinessCode()
-//                );
-//
-//                // Write the line to the file
-//                writer.write(line);
-//                writer.newLine(); // Move to the next line
-//            }
-//            String trailerIdentifier = "9";
-////            String acquirerMastercardCustomerID = "";
-//            String recordCount = padWithZeros(18, 9);
-//            String fillerCommonTrailerInfo = "        ";
-//            String fillerTrailerSpaces = "                                                    ";
-//
-//            writer.write(trailerIdentifier + acquirerMastercardCustomerID + recordCount + fillerCommonTrailerInfo + fillerTrailerSpaces);
-//        } catch (IOException e) {
-//            log.info("error : {}", e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
+
 
     @Scheduled(fixedRate = 60000)
     private void exportToTextFile() {

@@ -15,7 +15,11 @@ public enum Permission {
     MANAGER_READ("management:read"),
     MANAGER_UPDATE("management:update"),
     MANAGER_CREATE("management:create"),
-    MANAGER_DELETE("management:delete")
+    MANAGER_DELETE("management:delete"),
+
+    CUSTOMER_TIER_ONE(""),
+    CUSTOMER_TIER_TWO(""),
+    CUSTOMER_TIER_THREE("")
 
     ;
 
